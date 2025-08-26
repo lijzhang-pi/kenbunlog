@@ -11,14 +11,6 @@ const Layout: React.FC = () => {
     navigate('/');
   };
 
-  React.useEffect(() => {
-    console.log('Layout - 用户状态:', { isAuthenticated, user, isAdmin });
-    console.log('Layout - 当前路径:', window.location.pathname);
-  }, [isAuthenticated, user, isAdmin]);
-
-  React.useEffect(() => {
-    console.log('Layout组件渲染，准备渲染Outlet');
-  });
 
   return (
     <div className="min-h-screen bg-white">
@@ -37,11 +29,6 @@ const Layout: React.FC = () => {
                   <Link
                     to="/create"
                     className="bg-black hover:bg-gray-800 text-white px-5 py-2 rounded-full text-sm font-medium transition-colors"
-                    onClick={(e) => {
-                      console.log('发帖按钮被点击，用户状态:', { isAuthenticated, user, isAdmin });
-                      console.log('导航到:', '/create');
-                      console.log('Link事件:', e);
-                    }}
                   >
                     发布
                   </Link>

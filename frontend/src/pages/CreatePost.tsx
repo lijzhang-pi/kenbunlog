@@ -17,9 +17,7 @@ const CreatePost: React.FC = () => {
   const { isAuthenticated, loading: authLoading } = useAuth();
 
   useEffect(() => {
-    console.log('CreatePost组件加载，认证状态:', { isAuthenticated, authLoading });
     if (!authLoading && !isAuthenticated) {
-      console.log('用户未认证，重定向到登录页面');
       navigate('/login');
     }
   }, [isAuthenticated, authLoading, navigate]);
@@ -71,8 +69,6 @@ const CreatePost: React.FC = () => {
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
-    console.log('发帖按钮被点击，开始处理表单提交');
-    console.log('表单数据:', { title: title.trim(), content: content.trim(), imageFiles });
     
     setLoading(true);
     setError('');
@@ -82,11 +78,9 @@ const CreatePost: React.FC = () => {
       
       // 如果有图片，先上传
       if (imageFiles.length > 0) {
-        console.log('开始上传图片:', imageFiles.length, '张');
         setUploading(true);
         const uploadResult = await uploadApi.uploadImages(imageFiles);
         imageUrls = uploadResult.urls;
-        console.log('图片上传完成，URLs:', imageUrls);
         setUploading(false);
       }
 
@@ -97,13 +91,9 @@ const CreatePost: React.FC = () => {
         image_urls: imageUrls.length > 0 ? imageUrls : undefined,
       };
 
-      console.log('准备创建帖子，数据:', postData);
       const post = await postsApi.createPost(postData);
-      console.log('帖子创建成功:', post);
       navigate(`/post/${post.id}`);
     } catch (err: any) {
-      console.error('发帖失败:', err);
-      console.error('错误详情:', err.response?.data);
       setError(err.response?.data?.detail || '发布帖子失败');
     } finally {
       setLoading(false);
@@ -111,15 +101,9 @@ const CreatePost: React.FC = () => {
     }
   };
 
-  console.log('CreatePost render - 渲染CreatePost组件');
-
   return (
     <div className="bg-white min-h-screen">
       <div className="max-w-3xl mx-auto px-4 sm:px-6 py-16">
-        <div style={{ padding: '20px', border: '2px solid red', margin: '20px' }}>
-          <h2 style={{ color: 'red' }}>调试信息：CreatePost组件已渲染</h2>
-          <p>当前用户认证状态: {isAuthenticated ? '已认证' : '未认证'}</p>
-        </div>
         <h1 className="text-4xl font-light text-black mb-12 text-center tracking-tight">
           发布新内容
         </h1>
@@ -264,16 +248,6 @@ const CreatePost: React.FC = () => {
             <button
               type="submit"
               disabled={loading || uploading || !title.trim() || !content.trim()}
-              onClick={(e) => {
-                console.log('发帖按钮点击事件触发');
-                console.log('按钮状态:', {
-                  loading,
-                  uploading,
-                  titleTrimmed: title.trim(),
-                  contentTrimmed: content.trim(),
-                  isDisabled: loading || uploading || !title.trim() || !content.trim()
-                });
-              }}
               className="px-8 py-3 bg-black hover:bg-gray-800 text-white font-medium rounded-full disabled:opacity-50 disabled:cursor-not-allowed flex items-center transition-colors"
             >
               {loading ? (
