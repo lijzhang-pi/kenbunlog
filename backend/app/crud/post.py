@@ -21,11 +21,11 @@ def get_posts(db: Session, skip: int = 0, limit: int = 20, search: Optional[str]
     query = db.query(Post).options(joinedload(Post.author)).filter(Post.is_hidden == False)
     
     if search:
-        # 在标题和内容中搜索关键词（不区分大小写）
+        # 在标题和内容中搜索关键词（SQLite使用LIKE，不区分大小写）
         search_filter = f"%{search}%"
         query = query.filter(
-            (Post.title.ilike(search_filter)) | 
-            (Post.content.ilike(search_filter))
+            (Post.title.like(search_filter)) | 
+            (Post.content.like(search_filter))
         )
     
     return query.order_by(Post.created_at.desc()).offset(skip).limit(limit).all()

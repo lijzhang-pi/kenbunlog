@@ -1,6 +1,6 @@
 from fastapi import APIRouter, Depends, HTTPException, status, Query
 from sqlalchemy.orm import Session
-from typing import List
+from typing import List, Optional
 
 from app.core.database import get_db
 from app.dependencies.auth import get_current_active_user
@@ -14,7 +14,7 @@ router = APIRouter()
 async def get_posts(
     skip: int = Query(0, ge=0),
     limit: int = Query(20, ge=1, le=100),
-    search: str = Query(None, description="搜索关键词，将在标题和内容中搜索"),
+    search: Optional[str] = Query(None, description="搜索关键词，将在标题和内容中搜索"),
     db: Session = Depends(get_db)
 ):
     """获取帖子列表"""
