@@ -16,11 +16,19 @@ def get_post_with_comments(db: Session, post_id: str) -> Optional[Post]:
         joinedload(Post.comments).joinedload(Comment.author)
     ).filter(Post.id == post_id, Post.is_hidden == False).first()
 
-def get_posts(db: Session, skip: int = 0, limit: int = 20) -> List[Post]:
+def get_posts(db: Session, skip: int = 0, limit: int = 20, search: Optional[str] = None) -> List[Post]:
     """获取帖子列表"""
-    return db.query(Post).options(joinedload(Post.author)).filter(
-        Post.is_hidden == False
-    ).order_by(Post.created_at.desc()).offset(skip).limit(limit).all()
+    query = db.query(Post).options(joinedload(Post.author)).filter(Post.is_hidden == False)
+    
+    if search:
+        # 在标题和内容中搜索关键词（不区分大小写）
+        search_filter = f"%{search}%"
+        query = query.filter(
+            (Post.title.ilike(search_filter)) | 
+            (Post.content.ilike(search_filter))
+        )
+    
+    return query.order_by(Post.created_at.desc()).offset(skip).limit(limit).all()
 
 def create_post(db: Session, post: PostCreate, author_id: str) -> Post:
     """创建帖子"""

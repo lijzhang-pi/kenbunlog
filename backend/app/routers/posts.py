@@ -14,10 +14,11 @@ router = APIRouter()
 async def get_posts(
     skip: int = Query(0, ge=0),
     limit: int = Query(20, ge=1, le=100),
+    search: str = Query(None, description="搜索关键词，将在标题和内容中搜索"),
     db: Session = Depends(get_db)
 ):
     """获取帖子列表"""
-    posts = post_crud.get_posts(db, skip=skip, limit=limit)
+    posts = post_crud.get_posts(db, skip=skip, limit=limit, search=search)
     return posts
 
 @router.get("/{post_id}", response_model=PostWithComments)

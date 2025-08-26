@@ -10,6 +10,7 @@ import CreatePost from './pages/CreatePost';
 import EditPost from './pages/EditPost';
 import Profile from './pages/Profile';
 import AdminDashboard from './pages/AdminDashboard';
+import SearchResults from './pages/SearchResults';
 import ProtectedRoute from './components/ProtectedRoute';
 import AdminRoute from './components/AdminRoute';
 
@@ -26,6 +27,7 @@ function App() {
             {/* Layout包装的路由 */}
             <Route path="/" element={<Layout />}>
               <Route index element={<Home />} />
+              <Route path="search" element={<SearchResults />} />
               <Route path="post/:id" element={<PostDetail />} />
               
               {/* 需要登录的路由 */}

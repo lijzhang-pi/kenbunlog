@@ -38,8 +38,16 @@ export const authApi = {
 };
 
 export const postsApi = {
-  getPosts: (skip = 0, limit = 20): Promise<Post[]> =>
-    api.get(`/posts?skip=${skip}&limit=${limit}`).then(res => res.data),
+  getPosts: (skip = 0, limit = 20, search?: string): Promise<Post[]> => {
+    const params = new URLSearchParams({
+      skip: skip.toString(),
+      limit: limit.toString(),
+    });
+    if (search) {
+      params.append('search', search);
+    }
+    return api.get(`/posts?${params.toString()}`).then(res => res.data);
+  },
   
   getPost: (id: string): Promise<PostWithComments> =>
     api.get(`/posts/${id}`).then(res => res.data),
