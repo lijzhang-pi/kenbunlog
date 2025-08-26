@@ -19,6 +19,7 @@ const PostDetail: React.FC = () => {
     if (id) {
       fetchPost();
     }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [id]);
 
   const fetchPost = async () => {
@@ -106,6 +107,29 @@ const PostDetail: React.FC = () => {
 
   return (
     <div className="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
+      {/* 返回按钮 */}
+      <div className="mb-6">
+        <button
+          onClick={() => navigate(-1)}
+          className="flex items-center text-gray-600 hover:text-gray-800 font-medium transition-colors"
+        >
+          <svg 
+            className="w-5 h-5 mr-2" 
+            fill="none" 
+            stroke="currentColor" 
+            viewBox="0 0 24 24"
+          >
+            <path 
+              strokeLinecap="round" 
+              strokeLinejoin="round" 
+              strokeWidth={2} 
+              d="M15 19l-7-7 7-7" 
+            />
+          </svg>
+          返回
+        </button>
+      </div>
+
       {/* 帖子内容 */}
       <article className="bg-white rounded-lg shadow-sm p-8 mb-8">
         <div className="flex justify-between items-start mb-6">
